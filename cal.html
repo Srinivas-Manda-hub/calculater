@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simple Calculator - Project 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #fff;
+  }
+
+  .calculator {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    width: 320px;
+  }
+
+  h1 {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1.2px;
+  }
+
+  .inputs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  input[type="number"] {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-weight: 500;
+    color: #333;
+  }
+
+  select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #5a4a8a;
+    color: #eee;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  select option {
+    color: #333;
+  }
+
+  .result {
+    margin-top: 1.5rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.18);
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    user-select: none;
+    min-height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    opacity: 0.6;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <main class="calculator" role="main" aria-label="Simple Calculator">
+    <h1>Simple Calculator</h1>
+    <div class="inputs">
+      <input type="number" id="num1" placeholder="Number 1" aria-label="First number" />
+      <input type="number" id="num2" placeholder="Number 2" aria-label="Second number" />
+    </div>
+    <select id="operation" aria-label="Select operation">
+      <option value="add" selected>Addition (+)</option>
+      <option value="subtract">Subtraction (−)</option>
+      <option value="multiply">Multiplication (×)</option>
+      <option value="divide">Division (÷)</option>
+    </select>
+    <div class="result" aria-live="polite" aria-atomic="true" id="result">Result: 0</div>
+    <div class="footer">By Project 2 Calculator</div>
+  </main>
+
+  <script>
+    const num1Input = document.getElementById('num1');
+    const num2Input = document.getElementById('num2');
+    const operationSelect = document.getElementById('operation');
+    const resultDiv = document.getElementById('result');
+
+    function calculate() {
+      const val1 = parseFloat(num1Input.value);
+      const val2 = parseFloat(num2Input.value);
+
+      if (isNaN(val1) || isNaN(val2)) {
+        resultDiv.textContent = 'Result: Please enter valid numbers.';
+        return;
+      }
+
+      let result;
+      switch(operationSelect.value) {
+        case 'add':
+          result = val1 + val2;
+          break;
+        case 'subtract':
+          result = val1 - val2;
+          break;
+        case 'multiply':
+          result = val1 * val2;
+          break;
+        case 'divide':
+          if (val2 === 0) {
+            resultDiv.textContent = 'Result: Cannot divide by zero!';
+            return;
+          }
+          result = val1 / val2;
+          break;
+        default:
+          result = 0;
+      }
+
+      // Format result nicely (avoid long decimals)
+      if (typeof result === 'number') {
+        if (!Number.isInteger(result)) {
+          result = result.toFixed(6).replace(/\.?0+$/, ''); // Trim trailing zeros
+        }
+      }
+      resultDiv.textContent = `Result: ${result}`;
+    }
+
+    num1Input.addEventListener('input', calculate);
+    num2Input.addEventListener('input', calculate);
+    operationSelect.addEventListener('change', calculate);
+
+    // Initial calculation
+    calculate();
+  </script>
+</body>
+</html>
+
